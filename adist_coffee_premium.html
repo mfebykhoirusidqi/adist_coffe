@@ -1,0 +1,658 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Adist Coffee — Kopi premium Kerinci, Aceh Gayo. Delivery & Dine-in. Pesan via WhatsApp.">
+    <title>Adist Coffee</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;1,400&family=Inter:wght@300;400;500&display=swap" rel="stylesheet">
+    <style>
+
+        /* ── RESET ─────────────────────────── */
+        *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+        html { scroll-behavior: smooth; }
+        body {
+            background: #080706;
+            color: #f0e8e0;
+            font-family: 'Inter', sans-serif;
+            -webkit-font-smoothing: antialiased;
+            overflow-x: hidden;
+        }
+        a { text-decoration: none; color: inherit; }
+        img { display: block; width: 100%; }
+        button { cursor: pointer; border: none; background: none; font-family: inherit; }
+
+        /* ── NAV ───────────────────────────── */
+        nav {
+            position: fixed; top: 0; left: 0; right: 0; z-index: 99;
+            display: flex; justify-content: space-between; align-items: center;
+            padding: 0 5%; height: 64px;
+            background: rgba(8,7,6,0); /* starts transparent */
+            transition: background 0.4s;
+        }
+        nav.solid { background: rgba(8,7,6,0.96); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+        .logo {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.8rem; font-weight: 600;
+            color: #c8a165; letter-spacing: 2px;
+        }
+        .nav-wa {
+            display: flex; align-items: center; gap: 8px;
+            font-size: 0.8rem; font-weight: 500; letter-spacing: 1px;
+            color: #f0e8e0; padding: 8px 20px; border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.15);
+            transition: all 0.25s;
+        }
+        .nav-wa:hover { background: #25D366; border-color: #25D366; color: #fff; }
+        .nav-wa .dot { width: 7px; height: 7px; border-radius: 50%; background: #25D366; animation: pulse 2s infinite; }
+        @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:0.4} }
+
+        /* ── HERO ──────────────────────────── */
+        .hero {
+            position: relative; height: 100svh; min-height: 600px;
+            display: flex; flex-direction: column;
+            align-items: center; justify-content: center;
+            text-align: center;
+            overflow: hidden;
+        }
+        .hero-img {
+            position: absolute; inset: 0; z-index: 0;
+            background: url('https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?q=90&w=2400&auto=format&fit=crop') center/cover no-repeat;
+        }
+        .hero-img::after {
+            content: '';
+            position: absolute; inset: 0;
+            background: linear-gradient(
+                180deg,
+                rgba(8,7,6,0.3) 0%,
+                rgba(8,7,6,0.55) 50%,
+                rgba(8,7,6,1) 100%
+            );
+        }
+        .hero-body {
+            position: relative; z-index: 1;
+            animation: up 0.9s ease both 0.2s;
+        }
+        @keyframes up { from{opacity:0;transform:translateY(22px)} to{opacity:1;transform:none} }
+
+        .hero-tag {
+            display: inline-block;
+            font-size: 0.7rem; letter-spacing: 3.5px; text-transform: uppercase;
+            color: #c8a165; margin-bottom: 1.2rem;
+            border: 1px solid rgba(200,161,101,0.35);
+            padding: 5px 16px; border-radius: 30px;
+            background: rgba(200,161,101,0.07);
+        }
+        .hero h1 {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(4rem, 11vw, 8rem);
+            font-weight: 400; line-height: 0.95;
+            letter-spacing: -1px;
+            margin-bottom: 0.6rem;
+        }
+        .hero h1 em { font-style: italic; color: #c8a165; }
+        .hero-sub {
+            font-size: 0.9rem; color: rgba(240,232,224,0.6);
+            letter-spacing: 0.5px; margin-bottom: 2rem;
+        }
+        .hero-cta {
+            display: inline-flex; align-items: center; gap: 10px;
+            background: #c8a165; color: #080706;
+            font-size: 0.85rem; font-weight: 600; letter-spacing: 1px;
+            text-transform: uppercase; padding: 14px 32px; border-radius: 50px;
+            transition: all 0.3s;
+        }
+        .hero-cta:hover { background: #e0bc87; transform: translateY(-2px); box-shadow: 0 10px 28px rgba(200,161,101,0.4); }
+        .scroll-line {
+            position: absolute; bottom: 36px; left: 50%;
+            transform: translateX(-50%);
+            display: flex; flex-direction: column; align-items: center; gap: 6px;
+            color: rgba(240,232,224,0.4); font-size: 0.65rem; letter-spacing: 2.5px; text-transform: uppercase;
+            z-index: 1; animation: bob 2.5s ease-in-out infinite;
+        }
+        .scroll-line::after {
+            content: ''; display: block;
+            width: 1px; height: 32px;
+            background: linear-gradient(to bottom, rgba(200,161,101,0.6), transparent);
+        }
+        @keyframes bob { 0%,100%{transform:translateX(-50%) translateY(0)} 50%{transform:translateX(-50%) translateY(7px)} }
+
+        /* ── MENU SECTION ──────────────────── */
+        #menu {
+            padding: 80px 5%;
+            max-width: 1400px; margin: 0 auto;
+        }
+        .menu-header {
+            display: flex; justify-content: space-between; align-items: flex-end;
+            margin-bottom: 2.5rem; flex-wrap: wrap; gap: 1rem;
+        }
+        .menu-title {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: clamp(2rem, 5vw, 3rem); font-weight: 400;
+        }
+        .menu-title span { color: #c8a165; font-style: italic; }
+        /* Filter chips */
+        .filter-row {
+            display: flex; gap: 8px; flex-wrap: wrap;
+        }
+        .chip {
+            font-size: 0.72rem; letter-spacing: 1px; text-transform: uppercase;
+            padding: 6px 16px; border-radius: 30px;
+            border: 1px solid rgba(255,255,255,0.12); color: rgba(240,232,224,0.5);
+            background: none; transition: all 0.2s;
+        }
+        .chip.on, .chip:hover { border-color: #c8a165; color: #c8a165; background: rgba(200,161,101,0.08); }
+
+        /* ── GRID ──────────────────────────── */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+            gap: 20px;
+        }
+
+        /* ── CARD ──────────────────────────── */
+        .card {
+            border-radius: 16px; overflow: hidden;
+            background: #111009;
+            border: 1px solid rgba(255,255,255,0.05);
+            transition: transform 0.35s cubic-bezier(.19,1,.22,1), border-color 0.35s, box-shadow 0.35s;
+            opacity: 0; transform: translateY(24px);
+            display: flex; flex-direction: column;
+        }
+        .card.show { opacity: 1; transform: none; }
+        .card:hover {
+            transform: translateY(-6px);
+            border-color: rgba(200,161,101,0.3);
+            box-shadow: 0 20px 48px rgba(0,0,0,0.55);
+        }
+
+        /* photo */
+        .card-photo { position: relative; height: 230px; overflow: hidden; }
+        .card-photo img { height: 100%; object-fit: cover; transition: transform 0.6s ease; }
+        .card:hover .card-photo img { transform: scale(1.06); }
+
+        /* tags on photo */
+        .tags { position: absolute; top: 12px; left: 12px; display: flex; gap: 6px; z-index: 10; }
+        .tag {
+            font-size: 0.6rem; font-weight: 700; letter-spacing: 1.2px;
+            text-transform: uppercase; padding: 3px 9px; border-radius: 20px;
+        }
+        .t-best { background: #c8a165; color: #080706; }
+        .t-cold { background: #3ab8e0; color: #080706; }
+        .t-hot  { background: #e06030; color: #fff; }
+        .t-new  { background: #5b8cff; color: #fff; }
+        .t-veg  { background: #5cb85c; color: #fff; }
+        .t-local{ background: #c8a165; color: #080706; }
+
+        /* price pill */
+        .price {
+            position: absolute; bottom: 12px; right: 12px; z-index: 10;
+            background: rgba(8,7,6,0.8); backdrop-filter: blur(6px);
+            border: 1px solid rgba(200,161,101,0.4);
+            color: #c8a165; font-size: 0.85rem; font-weight: 600;
+            padding: 5px 13px; border-radius: 30px;
+        }
+
+        /* body */
+        .card-body { padding: 1.2rem 1.4rem 1.4rem; flex: 1; display: flex; flex-direction: column; }
+        .card-name {
+            font-family: 'Cormorant Garamond', serif;
+            font-size: 1.3rem; font-weight: 600;
+            margin-bottom: 0.25rem; line-height: 1.25;
+        }
+        .card-note { font-size: 0.78rem; color: rgba(240,232,224,0.45); margin-bottom: 1rem; line-height: 1.5; }
+        .stars { color: #c8a165; font-size: 0.72rem; letter-spacing: 1px; margin-bottom: 1rem; }
+        .stars span { color: rgba(240,232,224,0.3); margin-left: 6px; font-size: 0.7rem; }
+
+        /* toggles */
+        .opt-label { font-size: 0.65rem; letter-spacing: 1.5px; text-transform: uppercase; color: rgba(240,232,224,0.35); margin-bottom: 5px; }
+        .pills {
+            display: flex; gap: 5px;
+            background: rgba(0,0,0,0.35);
+            padding: 3px; border-radius: 8px;
+            margin-bottom: 0.9rem;
+        }
+        .pills input { display: none; }
+        .pills label {
+            flex: 1; text-align: center; padding: 6px 4px;
+            font-size: 0.8rem; color: rgba(240,232,224,0.4);
+            border-radius: 6px; cursor: pointer; transition: all 0.2s;
+        }
+        .pills input:checked + label { background: #1e1c19; color: #f0e8e0; }
+
+        /* order btn */
+        .btn-wa {
+            margin-top: auto;
+            width: 100%; padding: 11px;
+            border: 1px solid rgba(255,255,255,0.1); border-radius: 8px;
+            color: rgba(240,232,224,0.75); font-size: 0.85rem; font-weight: 500;
+            display: flex; align-items: center; justify-content: center; gap: 8px;
+            transition: all 0.25s;
+        }
+        .btn-wa svg { fill: currentColor; width: 17px; height: 17px; flex-shrink: 0; }
+        .btn-wa:hover { background: #25D366; border-color: #25D366; color: #fff; box-shadow: 0 6px 18px rgba(37,211,102,0.3); }
+
+        /* ── IMAGE CROSSFADE ────────────────── */
+        .card-photo { position: relative; }
+        .card-photo img {
+            position: absolute; inset: 0;
+            width: 100%; height: 100%; object-fit: cover;
+            transition: opacity 0.55s ease;
+        }
+        .card-photo img.img-cold { opacity: 0; }
+        .card-photo img.img-hot  { opacity: 1; }
+        /* single-image cards keep normal flow */
+        .card-photo img:only-child {
+            position: relative; inset: auto;
+            width: 100%; height: 100%; object-fit: cover;
+        }
+
+        /* ── FOOTER ─────────────────────────── */
+        footer {
+            border-top: 1px solid rgba(255,255,255,0.06);
+            padding: 0 0 0;
+            background: #050404;
+        }
+        .ft-map iframe {
+            display: block; width: 100%; height: 280px; border: none;
+            filter: invert(92%) hue-rotate(180deg) brightness(0.75) saturate(0.9) contrast(1.05);
+        }
+        .ft-body {
+            padding: 32px 5% 24px;
+            display: grid;
+            grid-template-columns: 1fr auto;
+            align-items: start;
+            gap: 2rem;
+        }
+        .ft-brand { font-family: 'Cormorant Garamond', serif; font-size: 1.6rem; color: #c8a165; margin-bottom: 0.4rem; }
+        .ft-info { font-size: 0.8rem; color: rgba(240,232,224,0.4); line-height: 1.8; }
+        .ft-info a { color: #c8a165; }
+        .ft-right { text-align: right; }
+        .ft-hours { font-size: 0.78rem; color: rgba(240,232,224,0.4); line-height: 1.9; }
+        .ft-hours strong { color: rgba(240,232,224,0.75); font-weight: 500; }
+        .ft-copy {
+            padding: 14px 5% 18px;
+            border-top: 1px solid rgba(255,255,255,0.04);
+            font-size: 0.72rem; color: rgba(240,232,224,0.2);
+            display: flex; justify-content: space-between; flex-wrap: wrap; gap: 0.5rem;
+        }
+
+        /* ── FLOATING WA ────────────────────── */
+        .wa-float {
+            position: fixed; bottom: 24px; right: 24px; z-index: 200;
+            width: 56px; height: 56px; border-radius: 50%;
+            background: #25D366;
+            display: flex; align-items: center; justify-content: center;
+            box-shadow: 0 6px 20px rgba(37,211,102,0.45);
+            animation: wa-glow 3s ease-in-out infinite;
+            transition: transform 0.3s;
+        }
+        .wa-float:hover { transform: scale(1.12); }
+        .wa-float svg { fill: #fff; width: 28px; height: 28px; }
+        @keyframes wa-glow { 0%,100%{box-shadow:0 6px 20px rgba(37,211,102,0.45)} 50%{box-shadow:0 6px 36px rgba(37,211,102,0.7)} }
+
+        /* ── RESPONSIVE ─────────────────────── */
+        @media (max-width: 600px) {
+            #menu { padding: 60px 4%; }
+            .menu-header { flex-direction: column; align-items: flex-start; }
+            .ft-body { grid-template-columns: 1fr; }
+            .ft-right { text-align: left; }
+            .ft-copy { flex-direction: column; }
+        }
+
+    </style>
+</head>
+<body>
+
+    <!-- NAV -->
+    <nav id="nav">
+        <div class="logo">Adist.</div>
+        <a href="https://wa.me/6281234567890?text=Halo%20Adist%20Coffee!%20Saya%20mau%20pesan%20%E2%98%95" target="_blank" class="nav-wa">
+            <span class="dot"></span> Chat &amp; Pesan
+        </a>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero">
+        <div class="hero-img"></div>
+        <div class="hero-body">
+            <div class="hero-tag">☕ Kopi Premium · Kerinci &amp; Aceh Gayo</div>
+            <h1>Adist<br><em>Coffee</em></h1>
+            <p class="hero-sub">Delivery 30–45 mnt &nbsp;·&nbsp; Dine-in &nbsp;·&nbsp; Buka 07.00 – 22.00</p>
+            <a href="#menu" class="hero-cta">Lihat Menu</a>
+        </div>
+        <div class="scroll-line">Scroll</div>
+    </section>
+
+    <!-- MENU -->
+    <section id="menu">
+        <div class="menu-header">
+            <h2 class="menu-title">Our <span>Menu</span></h2>
+            <div class="filter-row">
+                <button class="chip on" data-f="all">Semua</button>
+                <button class="chip" data-f="hot">☕ Hot</button>
+                <button class="chip" data-f="cold">🧊 Cold</button>
+                <button class="chip" data-f="nonkopi">🍵 Non-Kopi</button>
+            </div>
+        </div>
+
+        <div class="grid" id="grid">
+
+            <!-- 1 Espresso -->
+            <div class="card" data-cat="hot">
+                <div class="card-photo">
+                    <div class="tags"><span class="tag t-best">Bestseller</span><span class="tag t-hot">Hot</span></div>
+                    <div class="price">Rp 10.000</div>
+                    <img src="https://images.unsplash.com/photo-1510591509098-f4fdc6d0ff04?q=80&w=800&auto=format&fit=crop" alt="Single Origin Espresso" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <div class="card-name">Single Origin Espresso</div>
+                    <div class="card-note">Arabika Aceh Gayo · krema tebal · intens</div>
+                    <div class="stars">★★★★★ <span>(128)</span></div>
+                    <div class="opt-label">Kemasan</div>
+                    <div class="pills">
+                        <input type="radio" id="e-cup" name="e-pack" value="Cup" checked>
+                        <label for="e-cup">Cup</label>
+                        <input type="radio" id="e-btl" name="e-pack" value="Botol">
+                        <label for="e-btl">Botol</label>
+                    </div>
+                    <div class="opt-label">Layanan</div>
+                    <div class="pills">
+                        <input type="radio" id="e-del" name="e-srv" value="Delivery" checked>
+                        <label for="e-del">Delivery</label>
+                        <input type="radio" id="e-din" name="e-srv" value="Dine-in">
+                        <label for="e-din">Dine-in</label>
+                    </div>
+                    <button class="btn-wa" onclick="order('Single Origin Espresso','10.000','e')">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                        Pesan via WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <!-- 2 Velvet Latte -->
+            <div class="card" data-cat="hot">
+                <div class="card-photo">
+                    <div class="tags"><span class="tag t-best">Terlaris</span></div>
+                    <div class="price">Rp 18.000</div>
+                    <img src="https://images.unsplash.com/photo-1561882468-9110e03e0f78?q=80&w=800&auto=format&fit=crop" alt="Signature Velvet Latte" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <div class="card-name">Signature Velvet Latte</div>
+                    <div class="card-note">Espresso + susu segar bertekstur velvet</div>
+                    <div class="stars">★★★★★ <span>(214)</span></div>
+                    <div class="opt-label">Kemasan</div>
+                    <div class="pills">
+                        <input type="radio" id="l-cup" name="l-pack" value="Cup" checked>
+                        <label for="l-cup">Cup</label>
+                        <input type="radio" id="l-btl" name="l-pack" value="Botol">
+                        <label for="l-btl">Botol</label>
+                    </div>
+                    <div class="opt-label">Layanan</div>
+                    <div class="pills">
+                        <input type="radio" id="l-del" name="l-srv" value="Delivery" checked>
+                        <label for="l-del">Delivery</label>
+                        <input type="radio" id="l-din" name="l-srv" value="Dine-in">
+                        <label for="l-din">Dine-in</label>
+                    </div>
+                    <button class="btn-wa" onclick="order('Signature Velvet Latte','18.000','l')">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                        Pesan via WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <!-- 3 Americano -->
+            <div class="card" data-cat="hot">
+                <div class="card-photo" style="height:230px;">
+                    <div class="price">Rp 15.000</div>
+                    <!-- HOT image = default visible -->
+                    <img class="img-hot" src="https://images.unsplash.com/photo-1559525839-b184a4d698c7?q=80&w=800&auto=format&fit=crop" alt="Classic Americano Hot" loading="lazy">
+                    <!-- ICED image = hidden, shown on toggle -->
+                    <img class="img-cold" src="https://images.unsplash.com/photo-1461023058943-07fcbe16d735?q=80&w=800&auto=format&fit=crop" alt="Classic Americano Iced" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <div class="card-name">Classic Americano</div>
+                    <div class="card-note">Bold &amp; bersih · cocok untuk fokus kerja</div>
+                    <div class="stars">★★★★☆ <span>(89)</span></div>
+                    <div class="opt-label">Suhu</div>
+                    <div class="pills" data-swap="true">
+                        <input type="radio" id="a-hot" name="a-tmp" value="Hot" checked>
+                        <label for="a-hot">☕ Hot</label>
+                        <input type="radio" id="a-ice" name="a-tmp" value="Iced">
+                        <label for="a-ice">🧊 Iced</label>
+                    </div>
+                    <div class="opt-label">Layanan</div>
+                    <div class="pills">
+                        <input type="radio" id="a-del" name="a-srv" value="Delivery" checked>
+                        <label for="a-del">Delivery</label>
+                        <input type="radio" id="a-din" name="a-srv" value="Dine-in">
+                        <label for="a-din">Dine-in</label>
+                    </div>
+                    <button class="btn-wa" onclick="order('Classic Americano','15.000','a')">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                        Pesan via WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <!-- 4 Kerinci Cold Brew -->
+            <div class="card" data-cat="cold">
+                <div class="card-photo">
+                    <div class="tags"><span class="tag t-cold">Cold Brew</span><span class="tag t-local">Lokal Pride</span></div>
+                    <div class="price">Rp 22.000</div>
+                    <img src="kerinci_cold_coffee.png" alt="Kerinci Cold Brew — Arabica & Robusta" loading="lazy" style="object-position: center top;">
+                </div>
+                <div class="card-body">
+                    <div class="card-name">Kerinci Cold Brew</div>
+                    <div class="card-note">Arabica &amp; Robusta Kerinci, Jambi · 18 jam brew</div>
+                    <div class="stars">★★★★★ <span>(193)</span></div>
+                    <div class="opt-label">Blend</div>
+                    <div class="pills">
+                        <input type="radio" id="k-ara" name="k-bld" value="Arabica" checked>
+                        <label for="k-ara">Arabica</label>
+                        <input type="radio" id="k-rob" name="k-bld" value="Robusta">
+                        <label for="k-rob">Robusta</label>
+                    </div>
+                    <div class="opt-label">Layanan</div>
+                    <div class="pills">
+                        <input type="radio" id="k-del" name="k-srv" value="Delivery" checked>
+                        <label for="k-del">Delivery</label>
+                        <input type="radio" id="k-din" name="k-srv" value="Dine-in">
+                        <label for="k-din">Dine-in</label>
+                    </div>
+                    <button class="btn-wa" onclick="order('Kerinci Cold Brew','22.000','k')">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                        Pesan via WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <!-- 5 Matcha Latte -->
+            <div class="card" data-cat="nonkopi">
+                <div class="card-photo" style="height:230px;">
+                    <div class="tags"><span class="tag t-veg">Vegan</span><span class="tag t-new">New</span></div>
+                    <div class="price">Rp 22.000</div>
+                    <!-- HOT matcha -->
+                    <img class="img-hot" src="https://images.unsplash.com/photo-1536256263959-770b48d82b0a?q=80&w=800&auto=format&fit=crop" alt="Matcha Latte Hot" loading="lazy">
+                    <!-- ICED matcha -->
+                    <img class="img-cold" src="https://images.unsplash.com/photo-1556679343-c7306c1976bc?q=80&w=800&auto=format&fit=crop" alt="Matcha Latte Iced" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <div class="card-name">Japanese Matcha Latte</div>
+                    <div class="card-note">Ceremonial grade Kyoto · susu oat · antioksidan</div>
+                    <div class="stars">★★★★★ <span>(73)</span></div>
+                    <div class="opt-label">Suhu</div>
+                    <div class="pills" data-swap="true">
+                        <input type="radio" id="m-hot" name="m-tmp" value="Hot" checked>
+                        <label for="m-hot">☕ Hot</label>
+                        <input type="radio" id="m-ice" name="m-tmp" value="Iced">
+                        <label for="m-ice">🧊 Iced</label>
+                    </div>
+                    <div class="opt-label">Layanan</div>
+                    <div class="pills">
+                        <input type="radio" id="m-del" name="m-srv" value="Delivery" checked>
+                        <label for="m-del">Delivery</label>
+                        <input type="radio" id="m-din" name="m-srv" value="Dine-in">
+                        <label for="m-din">Dine-in</label>
+                    </div>
+                    <button class="btn-wa" onclick="order('Japanese Matcha Latte','22.000','m')">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                        Pesan via WhatsApp
+                    </button>
+                </div>
+            </div>
+
+            <!-- 6 Brown Sugar Milk Tea -->
+            <div class="card" data-cat="nonkopi">
+                <div class="card-photo">
+                    <div class="tags"><span class="tag t-best">Favorit</span></div>
+                    <div class="price">Rp 19.000</div>
+                    <img src="https://images.unsplash.com/photo-1558618666-fcd25c85cd64?q=80&w=800&auto=format&fit=crop" alt="Brown Sugar Milk Tea" loading="lazy">
+                </div>
+                <div class="card-body">
+                    <div class="card-name">Brown Sugar Milk Tea</div>
+                    <div class="card-note">Teh hitam · karamel gula aren · susu fresh</div>
+                    <div class="stars">★★★★★ <span>(102)</span></div>
+                    <div class="opt-label">Manis</div>
+                    <div class="pills">
+                        <input type="radio" id="b-ls" name="b-sw" value="Less Sweet" checked>
+                        <label for="b-ls">Less</label>
+                        <input type="radio" id="b-fs" name="b-sw" value="Full Sweet">
+                        <label for="b-fs">Full</label>
+                    </div>
+                    <div class="opt-label">Layanan</div>
+                    <div class="pills">
+                        <input type="radio" id="b-del" name="b-srv" value="Delivery" checked>
+                        <label for="b-del">Delivery</label>
+                        <input type="radio" id="b-din" name="b-srv" value="Dine-in">
+                        <label for="b-din">Dine-in</label>
+                    </div>
+                    <button class="btn-wa" onclick="order('Brown Sugar Milk Tea','19.000','b')">
+                        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+                        Pesan via WhatsApp
+                    </button>
+                </div>
+            </div>
+
+        </div><!-- /grid -->
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+        <!-- MAP — Mendalo Darat, dekat Universitas Jambi -->
+        <div class="ft-map">
+            <iframe
+                src="https://www.openstreetmap.org/export/embed.html?bbox=103.5530%2C-1.5850%2C103.6030%2C-1.5350&amp;layer=mapnik&amp;marker=-1.5600%2C103.5780"
+                title="Lokasi Adist Coffee — Mendalo Darat, Muaro Jambi"
+                loading="lazy"
+                allowfullscreen
+            ></iframe>
+        </div>
+        <div class="ft-body">
+            <div>
+                <div class="ft-brand">Adist Coffee.</div>
+                <div class="ft-info">
+                    📍 Mendalo Darat, Muaro Jambi<br>
+                    &nbsp;&nbsp;&nbsp;&nbsp;(dekat Universitas Jambi)<br>
+                    💬 <a href="https://wa.me/6281234567890" target="_blank">WhatsApp: 0812-3456-7890</a><br>
+                    📸 <a href="https://instagram.com/adistcoffee" target="_blank">@adistcoffee</a>
+                </div>
+            </div>
+            <div class="ft-right">
+                <div class="ft-hours">
+                    <strong>Jam Operasional</strong><br>
+                    Sen – Jum &nbsp;&nbsp; 07.00 – 22.00<br>
+                    Sabtu &nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp;&nbsp; 08.00 – 23.00<br>
+                    Minggu &nbsp;&nbsp;&nbsp;&nbsp; 08.00 – 21.00
+                </div>
+            </div>
+        </div>
+        <div class="ft-copy">
+            <span>© 2026 Adist Coffee · Made in Indonesia 🇮🇩</span>
+            <span>Biji Kerinci &amp; Aceh Gayo · Single Origin</span>
+        </div>
+    </footer>
+
+    <!-- FLOATING WA -->
+    <a href="https://wa.me/6281234567890?text=Halo%20Adist%20Coffee!%20Saya%20mau%20pesan%20%E2%98%95" target="_blank" class="wa-float" title="Chat & Pesan">
+        <svg viewBox="0 0 24 24"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51a12.8 12.8 0 0 0-.57-.01c-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 0 1-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 0 1-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 0 1 2.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0 0 12.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 0 0 5.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 0 0-3.48-8.413Z"/></svg>
+    </a>
+
+    <script>
+    /* ── ORDER ─────────────────────────────── */
+    function order(name, price, id) {
+        const WA = '6281234567890';
+        const get = s => { const el = document.querySelector(`input[name="${id}-${s}"]:checked`); return el ? el.value : null; };
+        const pack = get('pack'), tmp = get('tmp'), bld = get('bld'), sw = get('sw'), srv = get('srv');
+
+        let opts = [];
+        if (pack) opts.push(`📦 Kemasan: *${pack}*`);
+        if (tmp)  opts.push(`🌡️ Suhu: *${tmp}*`);
+        if (bld)  opts.push(`☕ Blend: *${bld}*`);
+        if (sw)   opts.push(`🍬 Manis: *${sw}*`);
+        if (srv)  opts.push(`🛵 Layanan: *${srv}*`);
+
+        let msg = `*Adist Coffee — Order* ☕\n━━━━━━━━━━━━━━━━\n`;
+        msg += `Menu: *${name}*\n`;
+        msg += opts.join('\n') + `\n`;
+        msg += `Harga: *Rp ${price}*\n━━━━━━━━━━━━━━━━\n`;
+        msg += srv === 'Delivery'
+            ? 'Tolong konfirmasi ongkir ke alamat saya ya! 🙏'
+            : 'Saya makan/minum di tempat. 😊';
+
+        window.open(`https://wa.me/${WA}?text=${encodeURIComponent(msg)}`, '_blank');
+    }
+
+    /* ── FILTER ─────────────────────────────── */
+    document.querySelectorAll('.chip').forEach(btn => {
+        btn.addEventListener('click', () => {
+            document.querySelectorAll('.chip').forEach(b => b.classList.remove('on'));
+            btn.classList.add('on');
+            const f = btn.dataset.f;
+            document.querySelectorAll('.card').forEach(c => {
+                c.style.display = (f === 'all' || c.dataset.cat === f) ? 'flex' : 'none';
+            });
+        });
+    });
+
+    /* ── REVEAL ─────────────────────────────── */
+    const io = new IntersectionObserver(entries => {
+        entries.forEach((e, i) => {
+            if (e.isIntersecting) {
+                setTimeout(() => e.target.classList.add('show'), 60 * (e.target.dataset.i || 0));
+                io.unobserve(e.target);
+            }
+        });
+    }, { threshold: 0.08 });
+    document.querySelectorAll('.card').forEach((c, i) => { c.dataset.i = i % 3; io.observe(c); });
+
+    /* ── HOT / ICED IMAGE SWAP ──────────────── */
+    document.querySelectorAll('.pills[data-swap]').forEach(group => {
+        group.querySelectorAll('input[type="radio"]').forEach(radio => {
+            radio.addEventListener('change', function() {
+                const card   = this.closest('.card');
+                const imgHot  = card.querySelector('.img-hot');
+                const imgCold = card.querySelector('.img-cold');
+                if (!imgHot || !imgCold) return;
+
+                if (this.value === 'Hot') {
+                    imgHot.style.opacity  = '1';
+                    imgCold.style.opacity = '0';
+                } else {
+                    imgHot.style.opacity  = '0';
+                    imgCold.style.opacity = '1';
+                }
+            });
+        });
+    });
+
+    /* ── NAV SCROLL ─────────────────────────── */
+    window.addEventListener('scroll', () => {
+        document.getElementById('nav').classList.toggle('solid', window.scrollY > 40);
+    }, { passive: true });
+    </script>
+</body>
+</html>
